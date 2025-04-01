@@ -1,9 +1,7 @@
 name: Deploy React App to HostGator (Yarn)
 
 on:
-  push:
-    branches:
-      - main  # ou outra branch que desejar
+  workflow_dispatch:
 
 jobs:
   deploy:
