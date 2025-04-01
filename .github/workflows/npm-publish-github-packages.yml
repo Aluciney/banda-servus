@@ -1,0 +1,35 @@
+name: Deploy React App to HostGator (Yarn)
+
+on:
+  push:
+    branches:
+      - main  # ou outra branch que desejar
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Instalar dependências com Yarn
+        run: yarn install --frozen-lockfile
+
+      - name: Build do projeto
+        run: yarn build
+
+      - name: Fazer upload via FTP para HostGator
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: build/  # Pasta de saída do React
+          server-dir: public_html/  # Pasta no servidor
